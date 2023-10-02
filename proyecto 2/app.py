@@ -1,7 +1,8 @@
+from tkinter import *
 import tkinter as tk
-from tkinter import messagebox
 from tkinter import filedialog, messagebox
-import tkinter.ttk as ttk
+from tkinter import ttk
+from Leerxml import *
 from Leerxml import leerxml
 
 class ProyectoDronesApp:
@@ -16,6 +17,8 @@ class ProyectoDronesApp:
         self.main_frame.pack(side=tk.BOTTOM)
         self.main_frame.pack_propagate(False)
         self.main_frame.configure(height=100,width=400)
+        self.nuevoDron = StringVar()
+
 
         self.titulo_label = tk.Label(root, text="PROYECTO No. 2 DRONES", font=("Helvetica", 18), bg="lightblue")
         self.titulo_label.pack(pady=(20, 10))
@@ -68,8 +71,66 @@ class ProyectoDronesApp:
     def ver_listado_drones(self):
         messagebox.showinfo("Listado de Drones", "Lista de drones ordenada alfabéticamente")
 
+
     def agregar_dron(self):
-        messagebox.showinfo("Agregar Dron", "Nuevo dron agregado con éxito")
+        # Crear una nueva ventana para la gestión de drones
+        gestion_drones_window = tk.Toplevel(self.root)
+        gestion_drones_window.title("Gestión de Drones")
+
+        def mostrar_lista_drones():
+            # Crear una ventana para mostrar la lista de drones
+            lista_drones_window = tk.Toplevel(gestion_drones_window)
+            lista_drones_window.title("Listado de Drones")
+
+            # Crear un área de texto para mostrar la lista de drones
+            text_area = tk.Text(lista_drones_window, height=10, width=40)
+            text_area.pack(padx=20, pady=10)
+
+            # Llamar a la función para mostrar la lista de drones en el área de texto
+            self.crear_tabla_listaDrones(text_area)
+
+        def mostrar_agregar_dron():
+            # Crear un cuadro de entrada de texto para el nombre del dron
+            nombre_input = tk.Entry(gestion_drones_window)
+            nombre_input.pack(pady=10)
+
+            # Función para agregar un nuevo dron
+            def agregar_dron():
+                nombre_dron = nombre_input.get()
+                if nombre_dron:
+                    listado_drones = self.readFile.get_listaDrones()
+                    for dron in listado_drones:
+                        if nombre_dron == dron.Dron.nombre_dron:
+                            messagebox.showinfo("Error", "El dron ya se encuentra en la lista.")
+                            return
+
+                    dron_nuevo = Dron(nombre_dron)
+                    listado_drones.insertar(dron_nuevo)
+                    messagebox.showinfo("Agregar Dron", "Dron agregado exitosamente.")
+                    nombre_input.delete(0, tk.END)  # Limpiar la entrada de texto
+                    # Actualizar el área de texto en la ventana de lista de drones
+                    mostrar_lista_drones()
+
+            # Crear un botón "Agregar" para agregar el dron
+            agregar_btn = tk.Button(gestion_drones_window, text="Agregar", command=agregar_dron)
+            agregar_btn.pack(pady=10)
+
+        # Crear un botón "Listado Drones" en la nueva ventana principal
+        listado_drones_btn = ttk.Button(gestion_drones_window, text="Listado Drones", command=mostrar_lista_drones)
+        listado_drones_btn.pack(pady=10)
+
+        # Crear un botón "Agregar Dron" en la nueva ventana principal
+        agregar_dron_btn = ttk.Button(gestion_drones_window, text="Agregar Dron", command=mostrar_agregar_dron)
+        agregar_dron_btn.pack(pady=10)
+
+    def crear_tabla_listaDrones(self, text_area):
+        listado_drones = self.readFile.get_listaDrones()
+        for i, dron in enumerate(listado_drones):
+            numero_dron = i + 1
+            texto_dron = f"{numero_dron}. {dron.Dron.nombre_dron}\n"
+            text_area.insert(tk.END, texto_dron)
+
+
 
     def ver_listado_sistemas_drones(self):
         messagebox.showinfo("Listado de Sistemas de Drones", "Listado de sistemas de drones gráficamente")

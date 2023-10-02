@@ -88,3 +88,19 @@ class leerxml():
                 self.lista_mensajes_temp.imprimir()
         except Exception as err:
             print("Error ", err)
+
+    def borrarListas(self):
+        self.lista_sistemas_temp.eliminar_datos()
+        self.lista_drones_temp.eliminar_datos()
+
+    def get_listaDrones(self):
+        return self.lista_drones_temp
+    
+    def get_listaSistemasDrones(self):
+        return self.lista_sistemas_temp
+    
+    def get_listaMensajes(self):
+        return self.lista_mensajes_temp
+    
+    def graficar(self):
+        self.lista_sistemas_temp.recorrer_grafica()
