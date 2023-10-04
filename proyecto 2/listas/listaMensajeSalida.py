@@ -1,5 +1,4 @@
 from nodos.nodoMensajeSalida import nodoMensajeSalida
-from MensajeSalida import MensajeSalida
 import xml.etree.ElementTree as ET
 
 class listaMensajeSalida:
@@ -21,16 +20,14 @@ class listaMensajeSalida:
         print("")
         print("MENSAJES NUEVOS")
         while actual!= None:
-            print("---------------------------------------")
+            print("_______________________________________________")
             print(f"Nombre Mensaje :{actual.Mensajesalida.nombreMensaje}, Sistema :{actual.Mensajesalida.sistema}, Mensaje: {actual.Mensajesalida.mensaje}, Tiempo Optimo :{actual.Mensajesalida.tiempoOptimo} ")
-            print("---------------------------------------")
+            print("_______________________________________________")
             actual=actual.siguiente
         print("===============================================================")
     
-    
     def get_mensaje(self,nombre):
         actual = self.primero
-
         while actual != None:
             if actual.Mensajesalida.nombreMensaje == nombre:
                 return actual.Mensajesalida

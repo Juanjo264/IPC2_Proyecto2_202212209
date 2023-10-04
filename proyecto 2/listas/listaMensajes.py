@@ -1,11 +1,11 @@
 from nodos.nodoMensajes import nodoMensajes
-from Mensajes import Mensajes
-import xml.etree.ElementTree as ET
+
 
 class listaMensajes:
     def __init__(self):
         self.primero = None
         self.ultimo = None
+
         
     def insertar(self,Mensajes):
         nuevo_nodo = nodoMensajes(Mensajes)
@@ -22,11 +22,10 @@ class listaMensajes:
 
     def imprimir(self):
         actual=self.primero
-        print("CONTENIDO")
         while actual!= None:
-            print("============================================")
-            print(f"Nombre del mensaje: {actual.Mensajes.nombre_mensaje}, Sistema de drones: {actual.Mensajes.sistema_drones}")
-            print("============================================")
+            print("----------------------------------------")
+            print(f"Nombre Mensaje: {actual.Mensajes.nombre_mensaje}, Sistema Drones: {actual.Mensajes.sistema_drones}")
+            print("----------------------------------------")
             actual.Mensajes.listaInstrucciones.imprimir()
             actual=actual.siguiente
     

@@ -1,5 +1,5 @@
 from nodos.nodoInstrucciones import nodoInstrucciones
-from Instrucciones import Instrucciones
+import os
 
 class listaInstrucciones:
     def __init__(self):
@@ -16,13 +16,12 @@ class listaInstrucciones:
         actual.siguiente=nodoInstrucciones(Instrucciones)
 
     def imprimir(self):
-        
         actual=self.primero
-        print("INSTRUCCIONES")
+        print("--------------Lista Instrucciones----------")
         while actual!= None:
-            print(f"Dron: {actual.Instrucciones.dron_actual},pocicion: {actual.Instrucciones.posicion}")
+            print(f"Dron: {actual.Instrucciones.dron_actual}, Posicion: {actual.Instrucciones.posicion}")
             actual=actual.siguiente
-        print("=======================")
+        print("---------------------------------------------------------")
     
     def eliminar_datos(self):
         while self.primero:
@@ -41,3 +40,31 @@ class listaInstrucciones:
             return valor_actual
         else:
             raise StopIteration
+        
+    def generar_dot_instrucciones(self):
+        dot_code = "node [shape=box];\n"  # forma de los nodos
+
+        aux = self.primero
+        while aux:
+            # Utiliza un formato para el nodo
+            dot_code += f'"{id(aux)}" [label="Dron: {aux.Instrucciones.dron_actual} | Posicion: {aux.Instrucciones.posicion}"];\n'
+            aux = aux.siguiente
+
+        return dot_code
+
+    def recorrer_grafica_instrucciones(self):
+        dot_code = f"""
+        digraph G {{
+            rankdir=LR;  // Cambia la dirección del grafo de arriba a abajo
+            {self.generar_dot_instrucciones()}
+        }}
+        """
+
+        with open('instrucciones.dot', 'w') as f:
+            f.write(dot_code)
+
+        # comando 'dot' en el PATH
+        os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+
+        # Ejecuta el comando dot para generar la imagen PNG
+        os.system(f"dot -Tpng instrucciones.dot -o Instrucciones.png")

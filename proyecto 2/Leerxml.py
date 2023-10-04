@@ -4,9 +4,13 @@ from listas.listaSistemasDrones import listaSistemasDrones
 from listas.listaContenido import listaContenido
 from listas.listaAlturas import listaAlturas
 from listas.listaInstrucciones import listaInstrucciones
+from listas.listaGenerarInstrucciones import listaGenerarInstrucciones
+
 from listas.listaMensajes import listaMensajes
 from Mensajes import Mensajes
 from Instrucciones import Instrucciones
+from GenerarInstrucciones import GenerarInstrucciones
+
 from Alturas import Alturas
 from Contenido import Contenido
 from Dron import Dron
@@ -16,7 +20,8 @@ class leerxml():
     def __init__(self):
         self.lista_drones_temp = listaDrones()
         self.lista_sistemas_temp = listaSistemasDrones()
-    
+        self.lista_generar_intruccion=listaGenerarInstrucciones()
+
     def cargarXml(self,ruta):
         try:
             with open(ruta, encoding='utf-8') as xml_file:
@@ -74,21 +79,28 @@ class leerxml():
                         nombre_mensaje = nodo_mensajes.get('nombre')
                         
                         lista_sistema_drones = nodo_mensajes.findall('sistemaDrones')
+                        self.lista_instruciones_temp = listaInstrucciones()
+
                         for nodo_sistema_drones in lista_sistema_drones:
                             sistema = nodo_sistema_drones.text
                         lista_instrucciones = nodo_mensajes.findall('instrucciones')
-                        self.lista_instruciones_temp = listaInstrucciones()
                         for nodo_instrucciones in lista_instrucciones:
                             lista_instruccion = nodo_instrucciones.findall('instruccion')
                             for nodo_instruccion in lista_instruccion:
                                 dron_instruccion = nodo_instruccion.get('dron')
                                 posicion = nodo_instruccion.text
                                 self.lista_instruciones_temp.insertar(Instrucciones(dron_instruccion,posicion))
+                                self.lista_generar_intruccion.insertar(GenerarInstrucciones(nombre_mensaje, dron_instruccion, posicion))
+
                         self.lista_mensajes_temp.insertar(Mensajes(nombre_mensaje,sistema,self.lista_instruciones_temp))
                 self.lista_mensajes_temp.imprimir()
+            self.lista_generar_intruccion.imprimir()
         except Exception as err:
             print("Error ", err)
-
+    
+    def graficar_instrucciones(self):
+        self.lista_generar_intruccion.recorrer_grafica_instrucciones()
+        
     def borrarListas(self):
         self.lista_sistemas_temp.eliminar_datos()
         self.lista_drones_temp.eliminar_datos()
@@ -104,3 +116,5 @@ class leerxml():
     
     def graficar(self):
         self.lista_sistemas_temp.recorrer_grafica()
+
+
