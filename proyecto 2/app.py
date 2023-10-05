@@ -342,7 +342,7 @@ class ProyectoDrones:
         messagebox.showinfo("Instrucciones de Envío de Mensaje", "Instrucciones para enviar un mensaje")
 
     def mostrar_ayuda(self):
-        ensayo_url = 'https://www.google.com/search?client=opera&q=traduoctr&sourceid=opera&ie=UTF-8&oe=UTF-8'
+        ensayo_url = 'https://github.com/Juanjo264/IPC2_Proyecto2_202212209/blob/main/Documentacion%20proyecto%202/Ensayo_Proyecto_2.pdf'
         
         ayuda_window = tk.Toplevel(self.root)
         ayuda_window.title("Datos del estudiante")
